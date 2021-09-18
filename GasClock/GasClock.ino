@@ -11,6 +11,8 @@ int sssr_8 = 11;
 
 void setup()
 {
+  Serial.begin(115200);
+  
   pinMode(shift_ds, OUTPUT);
   pinMode(shift_st_cp, OUTPUT);
   pinMode(shift_sh_cp, OUTPUT);
