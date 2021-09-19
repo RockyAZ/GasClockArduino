@@ -9,6 +9,8 @@ int sssr_2 = 9;
 int sssr_4 = 10;
 int sssr_8 = 11;
 
+char str [8] = {'0',',','3','3','7','1','8','7'};
+
 void setup()
 {
   Serial.begin(115200);
@@ -29,24 +31,33 @@ void setup()
 
 void loop()
 {
+  if(Serial.available() > 0)
+  {
+    String shitStr = Serial.readStringUntil('\n');
+    if(shitStr.length() != 8)
+    return;
+    for(int j = 0; j < 8; j++)
+    {
+      if(shitStr[j] == NULL)
+        str[j] = ',';
+      else
+        str[j] = shitStr[j];
+    }
+  }
+  
   digitalWrite(shift_mr, HIGH);
-  char strLong [10] = {'0','1','2','3','4','5','6','7','8','9'};
-//  char str [8] = {'0','1','2','3','4','5','6','7'};
-//  char str [8] = {'1',',','0','4','8','5','9','6'};
-  char str [8] = {'0',',','3','3','7','1','8','7'};
-//  char str [8] = {',',',',',',',',',',',',',',','};
-//  char str[] = "0123456789";
+
     //output to gas clock
-    byte bt = 0;
     for(int i = 0; i < 8; i++)
     {
       int strNum = str[i] - '0';
-      if(strNum < 0 || strNum > 9)
-        strNum = 0;
+//      if(strNum < 0 || strNum > 9)
+//        strNum = 0;
 
       SetShiftValues(1 << i);
       digitalWrite(photo_trans, LOW);
-      if(str[i] == ',')
+      if(strNum < 0 || strNum > 9)
+//      if(str[i] == ',')
       {
         SetSSSRLow();
        digitalWrite(photo_trans, HIGH);
